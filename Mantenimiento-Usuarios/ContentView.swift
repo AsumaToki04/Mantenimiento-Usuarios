@@ -20,9 +20,7 @@ struct Usuario: Codable, Identifiable {
 }
 
 class ModelUsuarios: ObservableObject {
-    @Published var listaUsuarios: [Usuario] = [
-        Usuario(nombre: "Toki", email: "asumatoki04@hotmail.com")
-    ]
+    @Published var listaUsuarios: [Usuario] = []
 }
 
 struct ContentView: View {
@@ -37,6 +35,7 @@ struct ContentView: View {
 
 struct ListaUsuarios: View {
     @ObservedObject var modelo: ModelUsuarios
+    @State private var mostrarSheet = false
     
     var body: some View {
         VStack {
@@ -52,6 +51,16 @@ struct ListaUsuarios: View {
                 }
             }
             .navigationTitle("Usuarios")
+            .toolbar {
+                Button(action: {
+                    mostrarSheet = true
+                }) {
+                    Image(systemName: "plus")
+                }
+            }
+            .sheet(isPresented: $mostrarSheet) {
+                RegistroUsuarios(modelo: modelo)
+            }
         }
     }
 }
