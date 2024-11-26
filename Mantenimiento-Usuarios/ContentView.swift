@@ -21,6 +21,32 @@ struct Usuario: Codable, Identifiable {
 
 class ModelUsuarios: ObservableObject {
     @Published var listaUsuarios: [Usuario] = []
+    
+    func archivoURL() -> URL {
+        let documentos = FileManager.default.urls(
+            for: .documentDirectory,
+            in: .userDomainMask
+        ).first!
+        return documentos.appendingPathExtension("usuarios.json")
+    }
+    
+    func guardarDatos() {
+        do {
+            let datos = try JSONEncoder().encode(listaUsuarios)
+            try datos.write(to: archivoURL())
+        } catch {
+            print("Error al guardar datos: \(error)")
+        }
+    }
+    
+    func cargarDatos() {
+        do {
+            let datos = try Data(contentsOf: archivoURL())
+            listaUsuarios = try JSONDecoder().decode([Usuario].self, from: datos)
+        } catch {
+            print("Error al cargar datos: \(error)")
+        }
+    }
 }
 
 struct ContentView: View {
@@ -51,6 +77,7 @@ struct ListaUsuarios: View {
                 }
                 .onDelete { indices in
                     modelo.listaUsuarios.remove(atOffsets: indices)
+                    modelo.guardarDatos()
                 }
             }
             .navigationTitle("Usuarios")
@@ -63,6 +90,9 @@ struct ListaUsuarios: View {
             }
             .sheet(isPresented: $mostrarSheet) {
                 RegistroUsuarios(modelo: modelo, mostrarSheet: $mostrarSheet)
+            }
+            .onAppear {
+                modelo.cargarDatos()
             }
         }
     }
@@ -84,6 +114,7 @@ struct RegistroUsuarios: View {
                 Button("Guardar") {
                     let nuevo = Usuario(nombre: nombre, email: email)
                     modelo.listaUsuarios.append(nuevo)
+                    modelo.guardarDatos()
                     mostrarSheet = false
                 }
             }
