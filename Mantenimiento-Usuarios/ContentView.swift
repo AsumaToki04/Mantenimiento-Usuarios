@@ -77,6 +77,7 @@ struct ListaUsuarios: View {
                 }
                 .onDelete { indices in
                     modelo.listaUsuarios.remove(atOffsets: indices)
+                    modelo.guardarDatos()
                 }
             }
             .navigationTitle("Usuarios")
@@ -89,6 +90,9 @@ struct ListaUsuarios: View {
             }
             .sheet(isPresented: $mostrarSheet) {
                 RegistroUsuarios(modelo: modelo, mostrarSheet: $mostrarSheet)
+            }
+            .onAppear {
+                modelo.cargarDatos()
             }
         }
     }
@@ -110,6 +114,7 @@ struct RegistroUsuarios: View {
                 Button("Guardar") {
                     let nuevo = Usuario(nombre: nombre, email: email)
                     modelo.listaUsuarios.append(nuevo)
+                    modelo.guardarDatos()
                     mostrarSheet = false
                 }
             }
