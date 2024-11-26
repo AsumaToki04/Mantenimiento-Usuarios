@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+struct Usuario: Codable, Identifiable {
+    let id: UUID
+    let nombre: String
+    let email: String
+    
+    init(id: UUID = UUID(), nombre: String, email: String) {
+        self.id = id
+        self.nombre = nombre
+        self.email = email
+    }
+}
+
 struct ContentView: View {
     var body: some View {
         VStack {
