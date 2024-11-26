@@ -7,20 +7,51 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+struct Usuario: Codable, Identifiable {
+    let id: UUID
+    let nombre: String
+    let email: String
+    
+    init(id: UUID = UUID(), nombre: String, email: String) {
+        self.id = id
+        self.nombre = nombre
+        self.email = email
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+class ModelUsuarios: ObservableObject {
+    @Published var listaUsuarios: [Usuario] = [
+        Usuario(nombre: "Toki", email: "asumatoki04@hotmail.com")
+    ]
+}
+
+struct ContentView: View {
+    @StateObject var modeloGlobal = ModelUsuarios()
+    
+    var body: some View {
+        NavigationView {
+            ListaUsuarios(modelo: modeloGlobal)
+        }
+    }
+}
+
+struct ListaUsuarios: View {
+    @ObservedObject var modelo: ModelUsuarios
+    
+    var body: some View {
+        VStack {
+            List {
+                ForEach(modelo.listaUsuarios) { item in
+                    VStack {
+                        Text(item.nombre)
+                            .font(.headline)
+                        Text(item.email)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
+            .navigationTitle("Usuarios")
+        }
     }
 }
