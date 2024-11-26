@@ -59,7 +59,7 @@ struct ListaUsuarios: View {
                 }
             }
             .sheet(isPresented: $mostrarSheet) {
-                RegistroUsuarios(modelo: modelo)
+                RegistroUsuarios(modelo: modelo, mostrarSheet: $mostrarSheet)
             }
         }
     }
@@ -67,6 +67,7 @@ struct ListaUsuarios: View {
 
 struct RegistroUsuarios: View {
     @ObservedObject var modelo: ModelUsuarios
+    @Binding var mostrarSheet: Bool
     
     @State private var nombre: String = ""
     @State private var email: String = ""
@@ -83,6 +84,13 @@ struct RegistroUsuarios: View {
                 }
             }
             .navigationTitle("Registro de Usuario")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancelar") {
+                        mostrarSheet = false
+                    }
+                }
+            }
         }
     }
 }
