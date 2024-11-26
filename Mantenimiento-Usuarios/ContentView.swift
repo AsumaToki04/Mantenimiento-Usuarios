@@ -55,3 +55,25 @@ struct ListaUsuarios: View {
         }
     }
 }
+
+struct RegistroUsuarios: View {
+    @ObservedObject var modelo: ModelUsuarios
+    
+    @State private var nombre: String = ""
+    @State private var email: String = ""
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                TextField("Nombre", text: $nombre)
+                TextField("Email", text: $email)
+                
+                Button("Guardar") {
+                    let nuevo = Usuario(nombre: nombre, email: email)
+                    modelo.listaUsuarios.append(nuevo)
+                }
+            }
+            .navigationTitle("Registro de Usuario")
+        }
+    }
+}
