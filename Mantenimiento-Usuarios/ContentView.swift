@@ -19,6 +19,12 @@ struct Usuario: Codable, Identifiable {
     }
 }
 
+class ModelUsuarios: ObservableObject {
+    @Published var listaUsuarios: [Usuario] = [
+        Usuario(nombre: "Toki", email: "asumatoki04@hotmail.com")
+    ]
+}
+
 struct ContentView: View {
     var body: some View {
         VStack {
