@@ -34,3 +34,24 @@ struct ContentView: View {
         }
     }
 }
+
+struct ListaUsuarios: View {
+    @ObservedObject var modelo: ModelUsuarios
+    
+    var body: some View {
+        VStack {
+            List {
+                ForEach(modelo.listaUsuarios) { item in
+                    VStack {
+                        Text(item.nombre)
+                            .font(.headline)
+                        Text(item.email)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
+            .navigationTitle("Usuarios")
+        }
+    }
+}
