@@ -49,6 +49,9 @@ struct ListaUsuarios: View {
                             .foregroundColor(.gray)
                     }
                 }
+                .onDelete { indices in
+                    modelo.listaUsuarios.remove(atOffsets: indices)
+                }
             }
             .navigationTitle("Usuarios")
             .toolbar {
