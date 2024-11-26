@@ -81,6 +81,7 @@ struct RegistroUsuarios: View {
                 Button("Guardar") {
                     let nuevo = Usuario(nombre: nombre, email: email)
                     modelo.listaUsuarios.append(nuevo)
+                    mostrarSheet = false
                 }
             }
             .navigationTitle("Registro de Usuario")
